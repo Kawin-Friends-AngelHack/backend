@@ -146,18 +146,18 @@ module.exports = {
 
 
         let singleSQL = `
-            SELECT event_name, location, sum(rate) as fitrate from customer c
+            SELECT event_name, location,e.image, sum(rate) as fitrate from customer c
             LEFT JOIN customer_int ci ON c.u_id = ci.u_id
             LEFT JOIN event e ON ci.interest = e.interest and  (e.gender = 'a' or e.gender = c.gender)
             WHERE 
                 c.u_id = ? AND
                 price < ? 
-            GROUP BY c.u_id, name, event_name,location
+            GROUP BY c.u_id, name, event_name,location, e.image
             ORDER BY name, sum(rate) DESC, event_name DESC;
         `
 
         let multiSQL = `
-            select event_name, location, sum(normalized_rate) as fitrate 
+            select event_name, location,image, sum(normalized_rate) as fitrate 
             from (
             select ci.u_id, name, interest, rate,sumrate,rate/sumrate as normalized_rate from customer c
             left join customer_int ci on c.u_id = ci.u_id
@@ -169,8 +169,8 @@ module.exports = {
             left join event e on norm.interest = e.interest 
             where e.gender  = 'a'
             and price < ?
-            group by event_name, location
-            order by fitrate desc, event_name desc
+            group by event_name, location, image
+            order by fitrate desc, event_name desc;
         `
 
         if(isSingle){
