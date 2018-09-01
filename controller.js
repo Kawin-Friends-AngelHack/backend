@@ -62,6 +62,17 @@ module.exports = {
             'gender'
         ]
 
+        let imgArr = [
+            'https://image.flaticon.com/icons/svg/194/194838.svg',
+            'https://image.flaticon.com/icons/svg/190/190680.svg',
+            'https://image.flaticon.com/icons/svg/147/147144.svg',
+            'https://image.flaticon.com/icons/svg/194/194933.svg',
+            'https://steemitimages.com/0x0/https://res.cloudinary.com/hpiynhbhq/image/upload/v1514546912/hpvlrvffjtdq6fcxroyc.png'
+        ]
+
+        let randomNumber = (Math.floor(Math.random() * 5))
+        let img = imgArr[randomNumber]
+
         pool.query(`
             INSERT INTO 
                 customer (u_id, name, gender, image) 
@@ -70,7 +81,7 @@ module.exports = {
             req.body['u_id'],
             req.body['name'],
             req.body['gender'],
-            (Math.floor(Math.random() * 5) + 1)+'.png' 
+            img
         ])
         .then(function(result){
             if(result.affectedRows!==1){
