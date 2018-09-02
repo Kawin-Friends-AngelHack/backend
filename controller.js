@@ -109,6 +109,20 @@ module.exports = {
             console.log(err)
         })
     },
+    getEachInterest:function(req,res){
+        let uid = req.params.uid
+        pool.query('SELECT * FROM customer_int WHERE u_id = ?;',uid)
+        .then(function(rows){
+            if(!rows){
+                console.log('No rows')
+                return
+            }
+            res.json(rows)
+        })
+        .catch(function(err){
+            console.log(err)
+        })
+    },
     createInterest:function(req,res){
         let fields = [
             'u_id',
@@ -128,6 +142,35 @@ module.exports = {
         .then(function(result){
             if(result.affectedRows!==1){
                 console.log("Can't insert")
+                return
+            }
+
+            res.json('ok')
+        })
+        .catch(function(err){
+            console.log(err)
+        })
+
+
+    },
+    deleteInterest:function(req,res){
+        let fields = [
+            'u_id',
+            'interest'
+        ]
+
+        pool.query(`
+            DELETE FROM customer_int
+            WHERE u_id = ?
+            AND interest = ?;
+        `,[
+            req.body['u_id'],
+            req.body['interest']
+        ])
+        .then(function(result){
+            if(result.affectedRows!==1){
+                console.log("Can't delete")
+                res.
                 return
             }
 
